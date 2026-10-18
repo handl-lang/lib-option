@@ -1,0 +1,21 @@
+name: handl-lib-option
+path: Cargo.toml
+purpose: 'option: Handl stdlib port (ADR-0128 split).'
+api:
+- name: handl-lib-option
+  kind: module
+  file: Cargo.toml
+  line: 1
+  module: handl-lib-option
+deps: []
+notes: ''
+verify:
+- Cargo.toml
+provenance:
+  files:
+  - Cargo.toml
+  hashes:
+  - c69251284fb7a771daed802da274b6a670a0113c
+  commit_sha: 29ffcf3327bfe5d0ef02c2bae1faf9e509ec5d1f
+  generated_at: '1792281229'
+  generator: kuda-template/0.1.0

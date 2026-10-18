@@ -1,0 +1,19 @@
+name: lib-option
+root: /home/luis/GitHub/handl-lang/lib-option
+purpose: ''
+modules:
+- handl-lib-option
+- lib-option
+commands:
+- cargo check
+- cargo test --workspace
+provenance:
+  files:
+  - Cargo.toml
+  - src/lib.rs
+  hashes:
+  - c69251284fb7a771daed802da274b6a670a0113c
+  - 15df27f412663cb0152d7f864dcdc1c93b787e91
+  commit_sha: 29ffcf3327bfe5d0ef02c2bae1faf9e509ec5d1f
+  generated_at: '1792281229'
+  generator: kuda/0.1.0
