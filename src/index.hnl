@@ -7,7 +7,7 @@
 --- The `Option<T>` type.
 --- @details
 --- An `Option<T>` is either `None` or `Some(value: T)`.
-export Option<T> := Type
+export Option<T> := (t) ~> type.Type()
 
 --- Construct a Some option wrapping a value.
 --- @param {value} - the value of type T
