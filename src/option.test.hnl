@@ -1,7 +1,12 @@
 from "./index" import * as option
+from "./index" import { None }
 
-test_option_some_tag := assert tag.tag_of(option.some(1)) = "Some"
+--- `option.some(v)` mints the canonical `__ctor__` object — `match`
+--- dispatches on the ctor sym (phase-3 WS-F; no `__tag__` string).
+test_option_some_tag := assert match option.some(1) { Some(_): true, _: false }
 
-test_option_some_payload := assert tag.untag(option.some(1)).value = 1
+test_option_some_payload := assert match option.some(1) { Some(v): v, _: null } = 1
 
-test_option_none_tag := assert tag.tag_of(option.none()) = "None"
+test_option_none_tag := assert match option.none() { None: true, _: false }
+
+test_option_some_is_not_none := assert match option.some(1) { None: false, _: true }

@@ -1,7 +1,17 @@
 --- Option type and constructors.
 --- @details
 --- The `option` package provides the `Option<T>` type and the `some`
---- / `none` constructors over the host tag system (ADR-0055/0077).
+--- / `none` constructors over the canonical `__ctor__` object shape
+--- (ADR-0152 §2 — the post-`__tag__` mint, phase-3 WS-F).
+---
+--- `some(v)` mints `{"__ctor__": Some, value: v, type: Option}` — the
+--- same record a `data Option :: Some(value) | None` declaration
+--- produces — so `match` dispatches on ctor-sym identity
+--- (`match v { Some(x): …, None: … }`), never a `__tag__` string. The
+--- mint stays manual rather than a `data` declaration because `data`'s
+--- spliced assigns bind module scope but produce no `export` record
+--- entry (the export transform is text-level); once `export`
+--- understands `data` declarations this file becomes `data Option`.
 
 --- @template T - the value type
 --- The `Option<T>` type.
@@ -13,14 +23,24 @@ export Option<T> := (t) ~> type.Type()
 --- @param {value} - the value of type T
 --- @returns {Option<T>}
 export some<T>: T ~[1]~> Option<T> := (value: T) ~> do {
-  --- `tag.tag` is deleted (ADR-0152 §Migration): mint the `__tag__`
-  --- record directly via `hash_map.set`.
-  hash_map.set({ value: value }, "__tag__", "Some")
+  { "__ctor__": sym.seeded("data.Option.Some"),
+    "value": value,
+    "type": { "__former__": sym.seeded("data.Option"), "indices": [null] } }
 }
 
 --- Construct a None option.
 --- @returns {Option<T>}
 export none<T>: () ~[1]~> Option<T> := () ~> do {
-  --- `null` payload → bare `{"__tag__": "None"}` (tag_value semantics).
-  hash_map.set({}, "__tag__", "None")
+  { "__ctor__": sym.seeded("data.Option.None"),
+    "type": { "__former__": sym.seeded("data.Option"), "indices": [null] } }
 }
+
+--- The nullary `None` ctor *value* — bound so `match v { None: … }`
+--- discriminates by equality (a 0-argument ctor pattern resolves
+--- through scope to its `{"__ctor__": …}` object; ADR-0152 §2).
+export None := none()
+
+--- `some` re-exported under its ctor name so `option.Some` reads like
+--- the `data`-declared surface and `Some(…)` patterns resolve the
+--- declared field order through scope.
+export Some := some
