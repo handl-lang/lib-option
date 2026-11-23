@@ -6,7 +6,7 @@
 
 [[repos]]
 name = "handl-lang/lib-option"
-dir = "/home/luis/GitHub/handl-lang/lib-option"
+dir = "~//GitHub/handl-lang/lib-option"
 branch = "refs/heads/main"
   [repos.runner]
   kind = "script"
