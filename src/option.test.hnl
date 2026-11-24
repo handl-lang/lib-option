@@ -5,7 +5,7 @@ from "./index" import { None }
 --- dispatches on the ctor sym (phase-3 WS-F; no `__tag__` string).
 test_option_some_tag := assert match option.some(1) { Some(_): true, _: false }
 
-test_option_some_payload := assert match option.some(1) { Some(v): v, _: null } = 1
+test_option_some_payload := assert match option.some(1) { Some(v): v, _: null } == 1
 
 test_option_none_tag := assert match option.none() { None: true, _: false }
 
