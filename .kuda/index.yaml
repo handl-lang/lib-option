@@ -1,19 +1,14 @@
 name: lib-option
 root: /home/luis/GitHub/handl-lang/lib-option
-purpose: ''
-modules:
-- handl-lib-option
-- lib-option
-commands:
-- cargo check
-- cargo test --workspace
+purpose: '`option` — Option type for Handl (pure handl).'
+modules: []
+commands: []
+tree_digest: da39a3ee5e6b4b0d3255bfef95601890afd80709
 provenance:
   files:
-  - Cargo.toml
-  - src/lib.rs
+  - README.md
   hashes:
-  - c69251284fb7a771daed802da274b6a670a0113c
-  - 15df27f412663cb0152d7f864dcdc1c93b787e91
-  commit_sha: 29ffcf3327bfe5d0ef02c2bae1faf9e509ec5d1f
-  generated_at: '1792281229'
+  - 55bd67b47bbef4079450164100f178b0664e901b
+  commit_sha: 67d0136df8d656273b13c3420131d18b99cbb5c5
+  generated_at: '1795484421'
   generator: kuda/0.1.0
