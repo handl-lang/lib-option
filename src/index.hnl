@@ -22,7 +22,7 @@ export Option<T> := (t) ~> type.Type()
 --- Construct a Some option wrapping a value.
 --- @param {value} - the value of type T
 --- @returns {Option<T>}
-export some<T>: T ~[1]~> Option<T> := (value: T) ~> do {
+export some<T>: T ~>[1] Option<T> := (value: T) ~> do {
   { "__ctor__": sym.seeded("data.Option.Some"),
     "value": value,
     "type": { "__former__": sym.seeded("data.Option"), "indices": [null] } }
@@ -30,7 +30,7 @@ export some<T>: T ~[1]~> Option<T> := (value: T) ~> do {
 
 --- Construct a None option.
 --- @returns {Option<T>}
-export none<T>: () ~[1]~> Option<T> := () ~> do {
+export none<T>: () ~>[1] Option<T> := () ~> do {
   { "__ctor__": sym.seeded("data.Option.None"),
     "type": { "__former__": sym.seeded("data.Option"), "indices": [null] } }
 }
