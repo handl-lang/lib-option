@@ -9,7 +9,7 @@
 | `src/index.hnl` | the library |
 | `src/option.test.hnl` | the .hnl test suite |
 | `pkg.hnl` | package manifest — `modules: ["option"]` |
-| `scripts/hnl-gate.sh`, `ci.sh` | the gate / bupha entry |
+| `scripts/hnl-gate.sh`, `workflows/gate.yaml` | the gate / bupha entry |
 
 ## Contract
 
