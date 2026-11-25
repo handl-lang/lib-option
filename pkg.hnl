@@ -1,1 +1,1 @@
-{ modules: ["option"], description: "Option type for Handl (pure handl).", license: "MIT" }
+{ modules: ["option"], name: "option", description: "Option type for Handl (pure handl).", license: "MIT" }
