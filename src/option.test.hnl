@@ -2,10 +2,13 @@ from "./index" import * as option
 from "./index" import { None }
 
 --- `option.some(v)` mints the canonical `__ctor__` object — `match`
---- dispatches on the ctor sym (phase-3 WS-F; no `__tag__` string).
-test_option_some_tag := assert match option.some(1) { Some(_): true, _: false }
+--- dispatches on the ctor sym (phase-3 WS-F; no `__tag__` string). The
+--- ctor sym's leaf is the lowercase ctor name, so arity patterns spell
+--- `some(…)`; the nullary arm uses the scope-bound `None` ctor *value*
+--- (a bare `none:` would bind as a catch-all var, not a constructor).
+test_option_some_tag := assert match option.some(1) { some(_): true, _: false }
 
-test_option_some_payload := assert match option.some(1) { Some(v): v, _: null } == 1
+test_option_some_payload := assert match option.some(1) { some(v): v, _: null } == 1
 
 test_option_none_tag := assert match option.none() { None: true, _: false }
 

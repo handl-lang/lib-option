@@ -4,34 +4,35 @@
 --- / `none` constructors over the canonical `__ctor__` object shape
 --- (ADR-0152 §2 — the post-`__tag__` mint, phase-3 WS-F).
 ---
---- `some(v)` mints `{"__ctor__": Some, value: v, type: Option}` — the
---- same record a `data Option :: Some(value) | None` declaration
+--- `some(v)` mints `{"__ctor__": some, value: v, type: Option}` — the
+--- same record an `Option := new Inductive { some : (value : a) ~> Option(a), none : Option(a) }` declaration
 --- produces — so `match` dispatches on ctor-sym identity
---- (`match v { Some(x): …, None: … }`), never a `__tag__` string. The
---- mint stays manual rather than a `data` declaration because `data`'s
---- spliced assigns bind module scope but produce no `export` record
---- entry (the export transform is text-level); once `export`
---- understands `data` declarations this file becomes `data Option`.
+--- (`match v { some(x): …, None: … }`), never a `__tag__` string. The
+--- mint stays manual rather than an inductive declaration because a
+--- family record's constructors bind module scope but produce no
+--- `export` record entry beyond the family name (the export transform
+--- is text-level); once `export` projects constructor names this file
+--- becomes `Option := new Inductive { … }`.
 
 --- @template T - the value type
 --- The `Option<T>` type.
 --- @details
---- An `Option<T>` is either `None` or `Some(value: T)`.
+--- An `Option<T>` is either `none` or `some(value: T)`.
 export Option<T> := (t) ~> type.Type()
 
---- Construct a Some option wrapping a value.
+--- Construct a `some` option wrapping a value.
 --- @param {value} - the value of type T
 --- @returns {Option<T>}
 export some<T>: T ~>[1] Option<T> := (value: T) ~> do {
-  { "__ctor__": sym.seeded("data.Option.Some"),
+  { "__ctor__": sym.seeded("data.Option.some"),
     "value": value,
     "type": { "__former__": sym.seeded("data.Option"), "indices": [null] } }
 }
 
---- Construct a None option.
+--- Construct a `none` option.
 --- @returns {Option<T>}
 export none<T>: () ~>[1] Option<T> := () ~> do {
-  { "__ctor__": sym.seeded("data.Option.None"),
+  { "__ctor__": sym.seeded("data.Option.none"),
     "type": { "__former__": sym.seeded("data.Option"), "indices": [null] } }
 }
 
@@ -40,7 +41,9 @@ export none<T>: () ~>[1] Option<T> := () ~> do {
 --- through scope to its `{"__ctor__": …}` object; ADR-0152 §2).
 export None := none()
 
---- `some` re-exported under its ctor name so `option.Some` reads like
---- the `data`-declared surface and `Some(…)` patterns resolve the
---- declared field order through scope.
+--- `some` re-exported under a capitalized alias so `option.Some`
+--- reads like the inductive-declared surface. Match patterns dispatch
+--- on the ctor sym's leaf — the lowercase `some` — so write
+--- `match v { some(x): … }`, not `Some(x)`; this alias is for
+--- value-position uses only.
 export Some := some
