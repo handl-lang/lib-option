@@ -23,7 +23,14 @@ export Option<T> := (t) ~> type.Type()
 --- Construct a `some` option wrapping a value.
 --- @param {value} - the value of type T
 --- @returns {Option<T>}
-export some<T>: T ~>[1] Option<T> := (value: T) ~> do {
+--- No `: T ~>[1] Option<T>` signature: `Option<T>` is a former-app
+--- (`App(Option, T)`) while the minted record synthesizes `type.record`,
+--- and the checker cannot unify the two — the same reason lib-test's
+--- `ok_res`/`err_res` mints stay unannotated. The `<T>` template and
+--- the `~>[1]` grade ride the signature, so they drop with it (a
+--- signature-less `~>[1]` impl exports as a non-arrow value); the
+--- `Option<T>` contract is carried by the type decl + docs.
+export some := (value) ~> do {
   { "__ctor__": sym.seeded("data.Option.some"),
     "value": value,
     "type": { "__former__": sym.seeded("data.Option"), "indices": [null] } }
@@ -31,15 +38,21 @@ export some<T>: T ~>[1] Option<T> := (value: T) ~> do {
 
 --- Construct a `none` option.
 --- @returns {Option<T>}
-export none<T>: () ~>[1] Option<T> := () ~> do {
+--- Signature dropped for the same former-app/record unify reason as
+--- `some` (see above).
+export none := () ~> do {
   { "__ctor__": sym.seeded("data.Option.none"),
     "type": { "__former__": sym.seeded("data.Option"), "indices": [null] } }
 }
 
 --- The nullary `None` ctor *value* — bound so `match v { None: … }`
 --- discriminates by equality (a 0-argument ctor pattern resolves
---- through scope to its `{"__ctor__": …}` object; ADR-0152 §2).
-export None := none()
+--- through scope to its `{"__ctor__": …}` object; ADR-0152 §2). The
+--- record is minted inline rather than via `none()` because the
+--- checker models the `() ~>` domain as `[]` and rejects the
+--- zero-argument call in module scope.
+export None := { "__ctor__": sym.seeded("data.Option.none"),
+                 "type": { "__former__": sym.seeded("data.Option"), "indices": [null] } }
 
 --- `some` re-exported under a capitalized alias so `option.Some`
 --- reads like the inductive-declared surface. Match patterns dispatch
